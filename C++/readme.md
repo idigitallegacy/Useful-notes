@@ -25,8 +25,9 @@ To link your CMake project with VulkanAPI via CLion toolchain for VS, follow the
 To call non-static method when static is required, use class inheritance:
 ```
 class Absctract {
-public:
+protected:
   static Abstract *app_instance;
+public:
   static void staticCall() {
     if (app_instance) app_instance->call();
   }
