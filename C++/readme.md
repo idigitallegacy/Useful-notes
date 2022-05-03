@@ -19,3 +19,34 @@ To link your CMake project with VulkanAPI via CLion toolchain for VS, follow the
   - `.\vcpkg install vulkan:x64-[OS]` (it's a port, requires VulkanSDK installed)
   - `.\vcpkg install vulkan-headers:x64-[OS]`
 - Insert output vcpkg lines (such as `find_package()` and `target_link_libraries()`) to CMakeLists.txt
+
+# Code tricks
+## Calling non-static members
+To call non-static method when static is required, use class inheritance:
+```
+class Absctract {
+public:
+  static Abstract *app_instance;
+  static void staticCall() {
+    if (app_instance) app_instance->call();
+  }
+  virtual void call() {};
+};
+Abstract *Abstract::app_instance = nullptr;
+
+class Object : public Abstract {
+public:
+  Object() {
+    app_instance = this;
+  }
+  void call() final {
+    // Call sth...
+  }
+};
+```
+
+Usage:
+```
+Object test;
+some_function(test.staticCall());
+```
